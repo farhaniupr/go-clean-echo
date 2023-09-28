@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"clean-go-echo/api/controllers"
 	"clean-go-echo/library"
 
 	"github.com/labstack/echo/v4"
@@ -8,7 +9,8 @@ import (
 
 // struct routes
 type CommonRoutes struct {
-	handler library.RequestHandler
+	handler        library.RequestHandler
+	userController controllers.UserController
 }
 
 // Setup routes
@@ -18,13 +20,17 @@ func (s CommonRoutes) Setup() {
 		api.GET("health-check", func(c echo.Context) error {
 			return c.JSON(200, "OK")
 		})
+		api.GET("user", s.userController.GetUser)
+		api.GET("users", s.userController.GetUserSecond)
 	}
 }
 
 func ModuleCommonRoutes(
 	handler library.RequestHandler,
+	userConteroller controllers.UserController,
 ) CommonRoutes {
 	return CommonRoutes{
-		handler: handler,
+		handler:        handler,
+		userController: userConteroller,
 	}
 }

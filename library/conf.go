@@ -21,7 +21,7 @@ type Env struct {
 }
 
 // Get environment
-func NewEnv() Env {
+func ModuleEnv() Env {
 
 	env := Env{}
 	viper.SetConfigFile(".env")

@@ -29,7 +29,7 @@ var info = &cobra.Command{
 
 				route.Setup()
 
-				_ = router.Echo.Start(":1000")
+				_ = router.Echo.Start(":" + library.ModuleEnv().ServerPort)
 			}),
 		)
 		ctx := context.Background()
