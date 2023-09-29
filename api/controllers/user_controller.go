@@ -4,7 +4,6 @@ import (
 	"clean-go-echo/library"
 	"clean-go-echo/services"
 	"log"
-	"time"
 
 	"github.com/labstack/echo/v4"
 )
@@ -23,18 +22,6 @@ func ModuleUserController(userservice services.User_MethodService,
 }
 
 func (u UserController) GetUser(c echo.Context) error {
-
-	user, err := u.servicesMethod.ListUser()
-	if err != nil {
-		log.Println(err.Error())
-	}
-
-	return c.JSON(200, user)
-}
-
-func (u UserController) GetUserSecond(c echo.Context) error {
-
-	time.Sleep(5 * time.Second)
 
 	user, err := u.servicesMethod.ListUser()
 	if err != nil {

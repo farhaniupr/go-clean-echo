@@ -2,6 +2,7 @@ package commands
 
 import (
 	"clean-go-echo/api/controllers"
+	"clean-go-echo/api/middlewares"
 	"clean-go-echo/api/routes"
 	"clean-go-echo/library"
 	"clean-go-echo/repository"
@@ -16,5 +17,5 @@ var CommonModules = fx.Options(
 	routes.Module,
 	services.Module,
 	repository.Module,
-	// 	middlewares.Module,
+	middlewares.Module,
 )

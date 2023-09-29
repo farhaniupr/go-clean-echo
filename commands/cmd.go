@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"clean-go-echo/api/middlewares"
 	"clean-go-echo/api/routes"
 	"clean-go-echo/library"
 	"context"
@@ -25,9 +26,11 @@ var info = &cobra.Command{
 			fx.Invoke(func(
 				route routes.Routes,
 				router library.RequestHandler,
+				middleware middlewares.Middlewares,
 			) {
 
 				route.Setup()
+				middleware.Setup()
 
 				_ = router.Echo.Start(":" + library.ModuleEnv().ServerPort)
 			}),

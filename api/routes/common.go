@@ -1,16 +1,15 @@
 package routes
 
 import (
-	"clean-go-echo/api/controllers"
 	"clean-go-echo/library"
 
 	"github.com/labstack/echo/v4"
 )
 
-// struct routes
+// CommonRoutes struct routes
 type CommonRoutes struct {
-	handler        library.RequestHandler
-	userController controllers.UserController
+	handler library.RequestHandler
+	// middleware middlewares.JWTAuthMiddleware
 }
 
 // Setup routes
@@ -20,17 +19,16 @@ func (s CommonRoutes) Setup() {
 		api.GET("health-check", func(c echo.Context) error {
 			return c.JSON(200, "OK")
 		})
-		api.GET("user", s.userController.GetUser)
-		api.GET("users", s.userController.GetUserSecond)
 	}
 }
 
+// ModuleCommonRoutes
 func ModuleCommonRoutes(
 	handler library.RequestHandler,
-	userConteroller controllers.UserController,
+	// middleware middlewares.JWTAuthMiddleware,
 ) CommonRoutes {
 	return CommonRoutes{
-		handler:        handler,
-		userController: userConteroller,
+		handler: handler,
+		// middleware: middleware,
 	}
 }

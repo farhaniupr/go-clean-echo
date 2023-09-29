@@ -24,12 +24,5 @@ func ModuleUserService(env library.Env, repoUser repository.UserRepository) User
 
 func (u UserService) ListUser() (user []models.User, err error) {
 
-	sql, err := u.repo.DB.DB()
-
-	if sql.Ping() != nil {
-		u.repo.Database.ConnectAgain(u.env)
-	}
-	defer sql.Close()
-
 	return user, u.repo.DB.Debug().Table("user").Select("*").Scan(&user).Error
 }
