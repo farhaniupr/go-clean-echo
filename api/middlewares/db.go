@@ -48,6 +48,7 @@ func (m DatabaseTrx) Setup() {
 		return func(c echo.Context) error {
 
 			log.Println("beginning database transaction")
+
 			m.db.ConnectAgain(m.env)
 
 			txHandle := m.db.DB.Begin()

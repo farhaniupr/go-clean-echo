@@ -16,6 +16,7 @@ type Database struct {
 
 // ModuleDatabase initial
 func ModuleDatabase(env Env) Database {
+	log.Println("test")
 	db, err := gorm.Open(mysql.Open(configDb(env)), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
@@ -24,7 +25,7 @@ func ModuleDatabase(env Env) Database {
 	if err != nil {
 		log.Println(err.Error())
 	}
-	log.Println("Database connection established")
+
 	return Database{
 		DB: db,
 	}

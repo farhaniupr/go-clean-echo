@@ -17,7 +17,8 @@ type UserRoutes struct {
 func (s UserRoutes) Setup() {
 	api := s.handler.Echo.Group("user/")
 	{
-		api.GET("list", s.userController.GetUser)
+		api.POST("store", s.userController.StoreUser)
+		api.GET("list", s.userController.ListUser)
 	}
 }
 

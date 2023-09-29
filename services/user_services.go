@@ -8,6 +8,7 @@ import (
 
 type User_MethodService interface {
 	ListUser() ([]models.User, error)
+	CreateUser(user models.User) (models.User, error)
 }
 
 type UserService struct {
@@ -23,6 +24,9 @@ func ModuleUserService(env library.Env, repoUser repository.UserRepository) User
 }
 
 func (u UserService) ListUser() (user []models.User, err error) {
+	return user, u.repo.DB.Table("user").Select("*").Scan(&user).Error
+}
 
-	return user, u.repo.DB.Debug().Table("user").Select("*").Scan(&user).Error
+func (u UserService) CreateUser(user models.User) (models.User, error) {
+	return user, u.repo.DB.Table("user").Create(&user).Error
 }
