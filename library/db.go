@@ -16,18 +16,17 @@ type Database struct {
 
 // ModuleDatabase initial
 func ModuleDatabase(env Env) Database {
-	log.Println("test")
-	db, err := gorm.Open(mysql.Open(configDb(env)), &gorm.Config{
-		NamingStrategy: schema.NamingStrategy{
-			SingularTable: true,
-		},
-	})
-	if err != nil {
-		log.Println(err.Error())
-	}
+	// db, err := gorm.Open(mysql.Open(configDb(env)), &gorm.Config{
+	// 	NamingStrategy: schema.NamingStrategy{
+	// 		SingularTable: true,
+	// 	},
+	// })
+	// if err != nil {
+	// 	log.Println(err.Error())
+	// }
 
 	return Database{
-		DB: db,
+		DB: nil,
 	}
 }
 
@@ -60,4 +59,27 @@ func configDb(env Env) string {
 
 	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		username, password, host, port, dbname)
+}
+
+func ConnectDB(env Env) *gorm.DB {
+	username := env.DBUsername
+	password := env.DBPassword
+	host := env.DBHost
+	port := env.DBPort
+	dbname := env.DBName
+
+	url := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", username, password, host, port, dbname)
+
+	db, err := gorm.Open(mysql.Open(url), &gorm.Config{
+		// Logger: logger.GetGormLogger(),
+		NamingStrategy: schema.NamingStrategy{
+			SingularTable: true,
+		},
+	})
+
+	if err != nil {
+		log.Println(err.Error())
+	}
+
+	return db
 }

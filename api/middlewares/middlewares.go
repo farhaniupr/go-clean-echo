@@ -24,12 +24,12 @@ type Middlewares []IMiddleware
 func ModuleMiddlewares(
 	// corsMiddleware CorsMiddleware,
 	jwtauthmiddleware JWTAuthMiddleware,
-	dbTrxMiddleware DatabaseTrx,
+	// dbTrxMiddleware DatabaseTrx,
 ) Middlewares {
 	return Middlewares{
 		// corsMiddleware,
 		jwtauthmiddleware,
-		dbTrxMiddleware,
+		// dbTrxMiddleware,
 	}
 }
 

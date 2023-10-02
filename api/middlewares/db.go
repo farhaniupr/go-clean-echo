@@ -47,9 +47,9 @@ func (m DatabaseTrx) Setup() {
 	m.handler.Echo.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 
-			log.Println("beginning database transaction")
-
 			m.db.ConnectAgain(m.env)
+
+			log.Println("beginning database transaction")
 
 			txHandle := m.db.DB.Begin()
 

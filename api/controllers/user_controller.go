@@ -6,6 +6,7 @@ import (
 	"clean-go-echo/services"
 	"log"
 
+	"github.com/albrow/forms"
 	"github.com/labstack/echo/v4"
 )
 
@@ -24,7 +25,9 @@ func ModuleUserController(userservice services.User_MethodService,
 
 func (u UserController) ListUser(c echo.Context) error {
 
-	user, err := u.servicesMethod.ListUser()
+	data_req, _ := forms.Parse(c.Request())
+
+	user, err := u.servicesMethod.ListUser(data_req.GetInt("limit"))
 	if err != nil {
 		log.Println(err.Error())
 	}

@@ -7,7 +7,7 @@ import (
 )
 
 type User_MethodService interface {
-	ListUser() ([]models.User, error)
+	ListUser(limit int) ([]models.User, error)
 	CreateUser(user models.User) (models.User, error)
 }
 
@@ -23,10 +23,32 @@ func ModuleUserService(env library.Env, repoUser repository.UserRepository) User
 	}
 }
 
-func (u UserService) ListUser() (user []models.User, err error) {
-	return user, u.repo.DB.Table("user").Select("*").Scan(&user).Error
+func (u UserService) ListUser(limit int) (user []models.User, err error) {
+
+	repository := library.ConnectDB(u.env)
+	sql, err := repository.DB()
+	if err != nil {
+		return []models.User{}, err
+	}
+
+	defer sql.Close()
+
+	if limit > 0 {
+		return user, repository.Table("user").Limit(limit).Select("*").Scan(&user).Error
+	} else {
+		return user, repository.Table("user").Select("*").Scan(&user).Error
+	}
 }
 
 func (u UserService) CreateUser(user models.User) (models.User, error) {
-	return user, u.repo.DB.Table("user").Create(&user).Error
+
+	repository := library.ConnectDB(u.env)
+	sql, err := repository.DB()
+	if err != nil {
+		return models.User{}, err
+	}
+
+	defer sql.Close()
+
+	return user, repository.Table("user").Create(&user).Error
 }
