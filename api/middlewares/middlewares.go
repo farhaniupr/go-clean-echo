@@ -9,6 +9,8 @@ var Module = fx.Options(
 	fx.Provide(ModuleDatabase),
 	fx.Provide(ModuleMiddlewares),
 	fx.Provide(ModuleJWTAuthMiddleware),
+	fx.Provide(ModuleLogger),
+	fx.Provide(ModuleCorsMiddleware),
 )
 
 // IMiddleware middleware interface
@@ -22,14 +24,14 @@ type Middlewares []IMiddleware
 // ModuleMiddlewares creates new middlewares
 // Register the middleware that should be applied directly (globally)
 func ModuleMiddlewares(
-	// corsMiddleware CorsMiddleware,
-	jwtauthmiddleware JWTAuthMiddleware,
-	// dbTrxMiddleware DatabaseTrx,
+	jwtauthMiddleware JWTAuthMiddleware,
+	loggerMiddleware LoggerMiddlewre,
+	corsMiddleware CorsMiddleware,
 ) Middlewares {
 	return Middlewares{
-		// corsMiddleware,
-		jwtauthmiddleware,
-		// dbTrxMiddleware,
+		jwtauthMiddleware,
+		loggerMiddleware,
+		corsMiddleware,
 	}
 }
 

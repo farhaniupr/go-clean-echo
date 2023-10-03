@@ -46,6 +46,18 @@ func Writelog(c echo.Context, env Env, logLevel string, msg string) {
 		EncodeName:     zapcore.FullNameEncoder,
 	}
 
+	req := c.Request()
+	res := c.Response()
+
+	fields := []zapcore.Field{
+		zap.Int("status", res.Status),
+		zap.String("reques_id", c.Response().Header().Get(echo.HeaderXRequestID)),
+		zap.String("method", req.Method),
+		zap.String("uri", req.RequestURI),
+		zap.String("host", req.Host),
+		zap.String("remote_ip", c.RealIP()),
+	}
+
 	writer := &lumberjack.Logger{
 		Filename:   env.LogOutput,
 		MaxSize:    100, //100mb
@@ -63,7 +75,7 @@ func Writelog(c echo.Context, env Env, logLevel string, msg string) {
 
 	logger := zap.New(zapCore, zap.AddCaller(), zap.AddStacktrace(zapcore.ErrorLevel))
 
-	logger.Log(atomicLevel.Level(), msg, zap.String("request_id", c.Response().Header().Get(echo.HeaderXRequestID)))
+	logger.Log(atomicLevel.Level(), msg, fields...)
 
 	defer logger.Sync()
 
