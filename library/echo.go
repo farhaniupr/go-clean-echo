@@ -12,9 +12,9 @@ type RequestHandler struct {
 
 func ModuleEcho() RequestHandler {
 	engine := echo.New()
-	engine.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format: "method=${method}, uri=${uri}, error=${error}, status=${status}\n",
-	}))
-	// engine.Use(middleware.Recover())
+
+	engine.Use(middleware.Recover())
+	engine.Use(middleware.RequestID())
+
 	return RequestHandler{Echo: engine}
 }
