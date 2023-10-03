@@ -2,7 +2,6 @@ package middlewares
 
 import (
 	"clean-go-echo/library"
-	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -37,8 +36,6 @@ func (m CorsMiddleware) Setup() {
 				"http://localhost:3000": true,
 				"":                      true,
 			}
-
-			log.Println(req.Header.Get("Origin"))
 
 			if origin := req.Header.Get("Origin"); allowList[origin] {
 				res.Header().Add("Access-Control-Allow-Origin", origin)

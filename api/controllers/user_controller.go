@@ -33,7 +33,7 @@ func (u UserController) ListUser(c echo.Context) error {
 		library.Writelog(c, u.env, "err", err.Error())
 	}
 
-	return c.JSON(200, user)
+	return library.ResponseInterface(c, 200, user, "List User")
 }
 
 func (u UserController) StoreUser(c echo.Context) error {
@@ -52,5 +52,5 @@ func (u UserController) StoreUser(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(200, user)
+	return library.ResponseInterface(c, 201, user, "List User")
 }
