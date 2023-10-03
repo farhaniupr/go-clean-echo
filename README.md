@@ -15,5 +15,5 @@
 ## How To Install & Run
 
 -  go mod tidy
--  untuk running : go run .
--  untuk build : go build .
+-  running : go run .
+-  build : go build .
