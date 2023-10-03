@@ -20,44 +20,26 @@ type JsonResponseTotal struct {
 }
 
 func ResponseInterface(c echo.Context, statusServer int, res interface{}, msg string) error {
-	if res != nil {
-		c.JSON(statusServer, JsonResponse{
-			RequestId: c.Response().Header().Get(echo.HeaderXRequestID),
-			Status:    statusServer,
-			Messages:  msg,
-			Data:      res,
-		})
-	} else {
-		c.JSON(statusServer, JsonResponse{
-			RequestId: c.Response().Header().Get(echo.HeaderXRequestID),
-			Status:    statusServer,
-			Messages:  msg,
-			Data:      map[string]interface{}{},
-		})
-	}
+
+	c.JSON(statusServer, JsonResponse{
+		RequestId: c.Response().Header().Get(echo.HeaderXRequestID),
+		Status:    statusServer,
+		Messages:  msg,
+		Data:      res,
+	})
 
 	return nil
 }
 
 func ResponseInterfaceTotal(c echo.Context, statusServer int, res interface{}, msg string, total int) error {
 
-	if res != nil {
-		c.JSON(statusServer, JsonResponseTotal{
-			RequestId: c.Response().Header().Get(echo.HeaderXRequestID),
-			Status:    statusServer,
-			Messages:  msg,
-			Data:      res,
-			Total:     total,
-		})
-	} else {
-		c.JSON(statusServer, JsonResponseTotal{
-			RequestId: c.Response().Header().Get(echo.HeaderXRequestID),
-			Status:    statusServer,
-			Messages:  msg,
-			Total:     total,
-			Data:      []interface{}{},
-		})
-	}
+	c.JSON(statusServer, JsonResponseTotal{
+		RequestId: c.Response().Header().Get(echo.HeaderXRequestID),
+		Status:    statusServer,
+		Messages:  msg,
+		Data:      res,
+		Total:     total,
+	})
 
 	return nil
 }

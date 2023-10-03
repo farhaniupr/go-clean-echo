@@ -6,7 +6,6 @@ require (
 	github.com/albrow/forms v0.3.3
 	github.com/golang-jwt/jwt/v5 v5.0.0
 	github.com/labstack/echo/v4 v4.11.1
-	github.com/rs/cors v1.10.1
 	github.com/spf13/cobra v1.4.0
 	github.com/spf13/viper v1.16.0
 	go.uber.org/fx v1.20.0
