@@ -68,7 +68,7 @@ func Writelog(c echo.Context, env Env, logLevel string, msg string) {
 	}
 
 	zapCore := zapcore.NewCore(
-		zapcore.NewJSONEncoder(endoderConfig),
+		zapcore.NewConsoleEncoder(endoderConfig),
 		zapcore.AddSync(writer),
 		atomicLevel,
 	)

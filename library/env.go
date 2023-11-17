@@ -28,12 +28,12 @@ func ModuleEnv() Env {
 
 	err := viper.ReadInConfig()
 	if err != nil {
-		log.Fatal("cannot read configuration")
+		log.Println("cannot read configuration")
 	}
 
 	err = viper.Unmarshal(&env)
 	if err != nil {
-		log.Fatal("environment can't be loaded: ", err)
+		log.Println("environment can't be loaded: ", err.Error())
 	}
 
 	return env
