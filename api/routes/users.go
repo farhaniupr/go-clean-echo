@@ -15,7 +15,7 @@ type UserRoutes struct {
 
 // Setup routes
 func (s UserRoutes) Setup() {
-	api := s.handler.Echo.Group("user/")
+	api := s.handler.Echo.Group("user/", s.middleware.Handler())
 	{
 		api.POST("store", s.userController.StoreUser)
 		api.GET("list", s.userController.ListUser)

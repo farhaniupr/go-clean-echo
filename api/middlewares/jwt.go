@@ -2,7 +2,6 @@ package middlewares
 
 import (
 	"clean-go-echo/services"
-	"net/http"
 	"strings"
 
 	"github.com/labstack/echo/v4"
@@ -30,27 +29,29 @@ func ModuleJWTAuthMiddleware(
 func (m JWTAuthMiddleware) Setup() {}
 
 // Handler handles middleware functionality
-func (m JWTAuthMiddleware) Handler(next echo.HandlerFunc) echo.HandlerFunc {
-	return func(c echo.Context) error {
-		authHeader := c.Request().Header.Get("Authorization")
-		t := strings.Split(authHeader, " ")
-		if len(t) == 2 {
-			authToken := t[1]
-			user, authorized, err := m.service.Authorize(authToken)
-			_ = user
-			if authorized {
-				next(c)
+func (m JWTAuthMiddleware) Handler() echo.MiddlewareFunc {
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			authHeader := c.Request().Header.Get("Authorization")
+			t := strings.Split(authHeader, " ")
+			if len(t) == 2 {
+				authToken := t[1]
+				user, authorized, err := m.service.Authorize(authToken)
+				_ = user
+				if authorized {
+					next(c)
+					return nil
+				}
+				c.JSON(401, map[string]interface{}{
+					"error": err.Error(),
+				})
+
 				return nil
 			}
-			c.JSON(http.StatusInternalServerError, map[string]interface{}{
-				"error": err.Error(),
+			c.JSON(401, map[string]interface{}{
+				"error": "you are not authorized",
 			})
-
 			return nil
 		}
-		c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"error": "you are not authorized",
-		})
-		return nil
 	}
 }
