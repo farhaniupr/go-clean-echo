@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"math"
 	"strconv"
+	"strings"
+
+	"github.com/dustin/go-humanize"
 )
 
 // interface{} to string
@@ -72,4 +75,10 @@ func Round(num float64) int {
 func ToFixed(num float64, precision int) float64 {
 	output := math.Pow(10, float64(precision))
 	return float64(Round(num*output)) / output
+}
+
+func FormatRupiah(amount float64) string {
+	humanizeValue := humanize.CommafWithDigits(amount, 0)
+	stringValue := strings.Replace(humanizeValue, ",", ".", -1)
+	return stringValue
 }
