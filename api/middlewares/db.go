@@ -107,3 +107,47 @@ func CloseDb(m *gorm.DB) *sql.DB {
 	}
 	return sql
 }
+
+func (m DatabaseTrx) HandlerDB() echo.MiddlewareFunc {
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			log.Println("beginning database transaction")
+
+			txHandle := m.db.DB.Begin()
+
+			defer func() {
+				if r := recover(); r != nil {
+					txHandle.Rollback()
+					log.Println("rollback database transaction")
+					return
+				}
+			}()
+
+			c.Set(constants.DBTransaction, txHandle)
+			if err := next(c); err != nil {
+				log.Println("commit err : ", err.Error())
+				return err
+			}
+
+			// commit transaction on success status
+			if statusInList(c.Response().Status, []int{http.StatusOK, http.StatusCreated, http.StatusNoContent, http.StatusPermanentRedirect, http.StatusTemporaryRedirect}) {
+
+				log.Println("commit database transaction")
+				if err := txHandle.Commit().Error; err != nil {
+					log.Println("commit err : ", err.Error())
+					return err
+				}
+
+			} else {
+
+				log.Println("rolling back database transaction")
+				txHandle.Rollback()
+
+				return nil
+
+			}
+
+			return nil
+		}
+	}
+}
